@@ -1,0 +1,12 @@
+stockSymbol: ${SYMBOL:MSFT}
+numberOfDaysToRetrieve: ${NDAYS:7}
+
+alphavantage:
+  basePath: https://www.alphavantage.co
+  readTimeoutMs: 500
+  connectionTimeoutMs: 1000
+
+logging:
+  level:
+    "org.apache.http": DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG

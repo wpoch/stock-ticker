@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wpoch</groupId>
-	<artifactId>stock-ticker-service</artifactId>
+	<artifactId>stock-ticker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>stock-ticker</name>
 	<description>Stock Ticker Service</description>
@@ -22,6 +22,8 @@
 		<openapi-generator-maven-plugin.version>6.0.0-beta</openapi-generator-maven-plugin.version>
 		<swagger-annotations.version>1.6.6</swagger-annotations.version>
 		<jsr305.version>3.0.2</jsr305.version>
+		<logstash-logback-encoder.version>5.2</logstash-logback-encoder.version>
+		<wiremock.version>2.27.2</wiremock.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -34,6 +36,12 @@
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>${jsr305.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback-encoder.version}</version>
 		</dependency>
 
 		<dependency>
@@ -53,8 +61,8 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.experimental</groupId>
@@ -91,6 +99,13 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.tomakehurst</groupId>
+			<artifactId>wiremock</artifactId>
+			<version>${wiremock.version}</version>
+			<type>pom</type>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -172,7 +187,10 @@
 							<invokerPackage>com.wpoch.stockticker.service</invokerPackage>
 							<generateApiDocumentation>false</generateApiDocumentation>
 							<generateModelDocumentation>false</generateModelDocumentation>
+							<generateModelTests>false</generateModelTests>
+							<generateApiTests>false</generateApiTests>
 							<configOptions>
+								<additionalModelTypeAnnotations>@lombok.Builder;@lombok.AllArgsConstructor</additionalModelTypeAnnotations>
 								<annotationLibrary>none</annotationLibrary>
 								<documentationProvider>none</documentationProvider>
 								<performBeanValidation>true</performBeanValidation>
@@ -194,8 +212,11 @@
 							<modelPackage>com.wpoch.stockticker.client.stockticker.model</modelPackage>
 							<generateApiDocumentation>false</generateApiDocumentation>
 							<generateModelDocumentation>false</generateModelDocumentation>
+							<library>resttemplate</library>
+							<generateModelTests>false</generateModelTests>
+							<generateApiTests>false</generateApiTests>
 							<configOptions>
-								<library>resttemplate</library>
+								<additionalModelTypeAnnotations>@lombok.Builder;@lombok.AllArgsConstructor</additionalModelTypeAnnotations>
 								<openApiNullable>false</openApiNullable>
 							</configOptions>
 						</configuration>
@@ -212,8 +233,11 @@
 							<modelPackage>com.wpoch.stockticker.client.alphavantage.model</modelPackage>
 							<generateApiDocumentation>false</generateApiDocumentation>
 							<generateModelDocumentation>false</generateModelDocumentation>
+							<library>resttemplate</library>
+							<generateModelTests>false</generateModelTests>
+							<generateApiTests>false</generateApiTests>
 							<configOptions>
-								<library>resttemplate</library>
+								<additionalModelTypeAnnotations>@lombok.Builder;@lombok.AllArgsConstructor</additionalModelTypeAnnotations>
 								<openApiNullable>false</openApiNullable>
 							</configOptions>
 						</configuration>
