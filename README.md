@@ -31,3 +31,25 @@ Once it's running you can send a request with:
 ```bash
 curl http://localhost:8080/price --silent
 ```
+
+## Container
+
+To build the container run:
+
+```bash
+./mvnw package && docker build . -t stock-ticker
+```
+
+> NOTE: In a future version the build should happen also in a container image as a multi-stage build.
+
+To run the container:
+```
+docker run -ti -e SYMBOL=CRM -e NDAYS=5 -e APIKEY=xxxxx --name stock-ticker --rm -P stock-ticker
+```
+
+To try it out:
+
+```bash
+curl http://$(docker port stock-ticker 8080)/price --silent
+```
+

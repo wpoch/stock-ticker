@@ -5,6 +5,7 @@ alphavantage:
   basePath: https://www.alphavantage.co
   readTimeoutMs: 500
   connectionTimeoutMs: 1000
+  apiKey: ${APIKEY}
 
 logging:
   level:
