@@ -1,0 +1,78 @@
+openapi: "3.0.2"
+info:
+  title: Alpha Vantage API Spec
+  version: "1.0"
+  description: "Manually generated API Spec for: https://www.alphavantage.co/documentation/#daily"
+servers:
+  - url: https://www.alphavantage.co
+security:
+  - ApiKeyAuth: []
+paths:
+  /query:
+    get:
+      parameters:
+        - in: query
+          name: function
+          required: true
+          description: Only supports TIME_SERIES_DAILY for now.
+          schema:
+            type: string
+            enum:
+              - TIME_SERIES_DAILY
+        - in: query
+          name: symbol
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: |
+            This API returns raw (as-traded) daily time series (date, daily open, daily high, daily low, daily close, daily volume) 
+            of the global equity specified, covering 20+ years of historical data. 
+            If you are also interested in split/dividend-adjusted historical data, please use the Daily Adjusted API, 
+            which covers adjusted close values and historical split and dividend events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeSeriesDailyResponse'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: Retrieve a new API Key here https://www.alphavantage.co/support/#api-key
+      type: apiKey
+      in: query
+      name: apikey
+  schemas:
+    TimeSeriesDailyResponse:
+      type: object
+      properties:
+        "Error Message":
+          type: string
+        "Meta Data":
+          type: object
+          properties:
+            "1. Information":
+              type: string
+            "2. Symbol":
+              type: string
+            "3. Last Refreshed":
+              type: string
+            "4. Output Size":
+              type: string
+            "5. Time Zone":
+              type: string
+        "Time Series (Daily)":
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              "1. open":
+                type: string
+              "2. high":
+                type: string
+              "3. low":
+                type: string
+              "4. close":
+                type: string
+              "5. volume":
+                type: string

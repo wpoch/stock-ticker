@@ -1,0 +1,46 @@
+openapi: "3.0.2"
+info:
+  title: Stock Ticker API Spec
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /price:
+    get:
+      responses:
+        '200':
+          description: Returns the last NDAYS days of data along with the average closing price over those days.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AverageStockPriceResponse'
+components:
+  schemas:
+    DailyStockPriceResponse:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        close:
+          type: number
+        volume:
+          type: number
+    AverageStockPriceResponse:
+      type: object
+      properties:
+        average:
+          type: number
+          description: Average closing price.
+        daily:
+          type: array
+          maxItems: 100
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/DailyStockPriceResponse'
