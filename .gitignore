@@ -32,3 +32,4 @@ application-local.yaml
 values-local.yaml
 
 
+*.tgz

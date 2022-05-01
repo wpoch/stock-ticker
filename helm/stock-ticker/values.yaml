@@ -62,3 +62,7 @@ deployment:
     NDAYS: 7
   secret:
     APIKEY: # Get one from https://www.alphavantage.co/support/#api-key
+
+local:
+  ingress:
+    deploy: false

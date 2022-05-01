@@ -72,15 +72,23 @@ kubectl cluster-info --context kind-stock-ticker
 ```
 
 Get the resources to be created:
-
 ```
 helm template --set deployment.secret.APIKEY=C227WD9W3LUVKVV9 helm/stock-ticker
 ```
 
 To install the chart:
+> First time retrieve the Chart dependencies with: 
+```bash
+helm repo update
+helm dependency update helm/stock-ticker
+```
 
 ```
-helm upgrade --install --set deployment.secret.APIKEY=C227WD9W3LUVKVV9 stock-ticker helm/stock-ticker
+helm upgrade \
+--install \
+--set deployment.secret.APIKEY=C227WD9W3LUVKVV9 \
+--set local.ingress.deploy=true \
+stock-ticker helm/stock-ticker
 ```
 
 To execute the service, first port-forward the ingress controller:
