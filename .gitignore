@@ -27,5 +27,8 @@ target/
 *.iml
 .DS_Store
 
+# Local configuration
 application-local.yaml
+values-local.yaml
+
 

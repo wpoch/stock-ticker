@@ -53,3 +53,49 @@ To try it out:
 curl http://$(docker port stock-ticker 8080)/price --silent
 ```
 
+## Kubernetes
+
+The service is packaged as a Helm v3 Chart that can be installed in a vanilla K8s cluster (as opposed with Helm v2 that you required tiller in the cluster).
+> Install it with `brew install helm`
+
+To try it locally we recommend `kind` and create a containerized K8s cluster with:
+> Install it with `brew install kind` 
+
+```
+kind create cluster --name stock-ticker
+```
+
+Switch your `kubectl` to the created cluster:
+
+```
+kubectl cluster-info --context kind-stock-ticker
+```
+
+Get the resources to be created:
+
+```
+helm template --set deployment.secret.APIKEY=C227WD9W3LUVKVV9 helm/stock-ticker
+```
+
+To install the chart:
+
+```
+helm upgrade --install --set deployment.secret.APIKEY=C227WD9W3LUVKVV9 stock-ticker helm/stock-ticker
+```
+
+To execute the service, first port-forward the ingress controller:
+```
+kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-controller 8080:80
+```
+
+Then:
+
+```
+curl http://localhost:80/price --silent
+```
+
+To clean up:
+```bash 
+helm delete --purge stock-ticker && \
+kind delete cluster --name stock-ticker
+```
