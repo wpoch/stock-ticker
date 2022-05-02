@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "stock-ticker.fullname" . }}-configmap
+data:
+{{- range $k, $v := .Values.deployment.env }}
+  {{ $k | quote | upper }}: {{ $v | quote -}}
+{{ end }}

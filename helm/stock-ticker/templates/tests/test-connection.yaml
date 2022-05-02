@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "stock-ticker.fullname" . }}-test-connection"
+  labels:
+    {{- include "stock-ticker.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "stock-ticker.fullname" . }}:{{ .Values.service.port }}/price']
+  restartPolicy: Never
