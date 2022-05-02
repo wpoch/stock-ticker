@@ -91,21 +91,9 @@ helm upgrade \
 stock-ticker helm/stock-ticker
 ```
 
-Get the IP:
-
-```bash
-docker container inspect stock-ticker-control-plane \
-  --format '{{ .NetworkSettings.Networks.kind.IPAddress }}'
-```
-
-Add it to the `/etc/hosts` file with:
-```
-172.18.0.2 stock-ticker.local
-```
-
 Execute the API:
 ```
-curl http://stock-ticker.local --silent
+curl http://localhost/price --silent
 ```
 
 To clean up:
