@@ -22,7 +22,5 @@
 *.tmproj
 .vscode/
 
-charts/**
-
 # Local files
 values-local.yaml

@@ -11,3 +11,15 @@ logging:
   level:
     "org.apache.http": DEBUG
     org.springframework.web.client.RestTemplate: DEBUG
+
+# Enable the liveness and readiness probes for local testing not in K8s
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

@@ -15,17 +15,17 @@ securityContext:
    capabilities:
      drop:
      - ALL
-   readOnlyRootFilesystem: true
+   # TODO: Tomcat needs /tmp dir, I couldn't figure out quickly how to overcome that one
+   # readOnlyRootFilesystem: true
    runAsNonRoot: true
    runAsUser: 1000
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: true
-  className: ""
   annotations:
      kubernetes.io/ingress.class: nginx
      kubernetes.io/tls-acme: "false"
@@ -38,11 +38,11 @@ ingress:
 
 resources:
    limits:
-     cpu: 100m
-     memory: 128Mi
+     cpu: 500m
+     memory: 512Mi
    requests:
-     cpu: 100m
-     memory: 128Mi
+     cpu: 500m
+     memory: 512Mi
 
 autoscaling:
   enabled: true
@@ -62,7 +62,3 @@ deployment:
     NDAYS: 7
   secret:
     APIKEY: # Get one from https://www.alphavantage.co/support/#api-key
-
-local:
-  ingress:
-    deploy: false

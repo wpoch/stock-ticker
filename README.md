@@ -62,7 +62,7 @@ To try it locally we recommend `kind` and create a containerized K8s cluster wit
 > Install it with `brew install kind` 
 
 ```
-kind create cluster --name stock-ticker
+kind create cluster --config helm/kind-cluster.yaml
 ```
 
 Switch your `kubectl` to the created cluster:
@@ -71,39 +71,45 @@ Switch your `kubectl` to the created cluster:
 kubectl cluster-info --context kind-stock-ticker
 ```
 
+Install the nginx ingress controller:
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+```
+
 Get the resources to be created:
 ```
 helm template --set deployment.secret.APIKEY=C227WD9W3LUVKVV9 helm/stock-ticker
 ```
 
 To install the chart:
-> First time retrieve the Chart dependencies with: 
-```bash
-helm repo update
-helm dependency update helm/stock-ticker
-```
 
 ```
 helm upgrade \
 --install \
 --set deployment.secret.APIKEY=C227WD9W3LUVKVV9 \
---set local.ingress.deploy=true \
 stock-ticker helm/stock-ticker
 ```
 
-To execute the service, first port-forward the ingress controller:
-```
-kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-controller 8080:80
+Get the IP:
+
+```bash
+docker container inspect stock-ticker-control-plane \
+  --format '{{ .NetworkSettings.Networks.kind.IPAddress }}'
 ```
 
-Then:
-
+Add it to the `/etc/hosts` file with:
 ```
-curl http://localhost:80/price --silent
+172.18.0.2 stock-ticker.local
+```
+
+Execute the API:
+```
+curl http://stock-ticker.local --silent
 ```
 
 To clean up:
 ```bash 
-helm delete --purge stock-ticker && \
+helm delete stock-ticker && \
 kind delete cluster --name stock-ticker
 ```
